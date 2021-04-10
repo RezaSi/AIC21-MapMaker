@@ -125,9 +125,6 @@ $(document).ready(function(){
                         }
                     }
                 }
-                
-                $("#output").append(color_to_object[$( this ).css("background-color" )](row, col));
-                $("#output").append("\n");
             });
         });
     });
