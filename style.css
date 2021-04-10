@@ -1,0 +1,31 @@
+body{
+    font-family: Tahoma;
+    font-size: 15px;
+}
+.row{
+    display: flex;
+}
+
+.cell{
+    width: 30px;
+    height: 30px;
+    background-color: #7f8c8d;
+    margin: 2px;
+    border-radius: 3px;
+}
+
+.cell:hover{
+    transform: scale(1.2);
+    -webkit-transition: transform 0.75s ease-in-out;
+    border-radius: 5px;
+}
+
+.help {
+    display: flex;
+}
+
+.help .cell{
+    font-size: 13px;
+    width: 40px;
+    height: 40px;
+}
