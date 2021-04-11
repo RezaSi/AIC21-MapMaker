@@ -32,7 +32,12 @@ $(document).ready(function(){
                 backgroundColor = "rgb(127, 140, 141)";
             break;
         }
-
+        if(backgroundColor == "rgb(39, 174, 96)" || backgroundColor == "rgb(241, 196, 15)"){
+            clickedCell.empty();
+            if(clickedCell.append("<p>0</p>"));
+        }else{
+            clickedCell.empty();
+        }
         clickedCell.css("background-color", backgroundColor);
     });
 });
@@ -94,10 +99,10 @@ $(document).ready(function(){
                 backgroundColor = $( this ).css("background-color" );
 
                 rec1 = 0;
-                rec1 = 0;
+                rec2 = 0;
                 if(backgroundColor == "rgb(39, 174, 96)"){
                     rec1 = value;
-                }else{
+                }else if(backgroundColor == "rgb(241, 196, 15)"){
                     rec2 = value;
                 }
                 output += color_to_object[$( this ).css("background-color" )](row, col, rec1, rec2);
@@ -126,7 +131,7 @@ $(document).ready(function(){
         }
         $(".row").empty();
         for (var i = 0; i < width; ++i) {
-            $(".row").append('<div class="cell"><p>0</p></div>');
+            $(".row").append('<div class="cell"></div>');
         }
 
         $( ".row" ).each(function( row ) {
@@ -142,10 +147,10 @@ $(document).ready(function(){
                         if(mapJson.cells_type[i].cell_type == 2){
                             if(mapJson.cells_type[i].rec1 > 0){
                                 $( this ).css("background-color", "rgb(39, 174, 96)");
-                                $( this ).find("p").text(mapJson.cells_type[i].rec1);
+                                $( this ).append("<p>" + mapJson.cells_type[i].rec1 + "</p>");
                             }else if(mapJson.cells_type[i].rec2 > 0){
                                 $( this ).css("background-color", "rgb(241, 196, 15)");
-                                $( this ).find("p").text(mapJson.cells_type[i].rec2);
+                                $( this ).append("<p>" + mapJson.cells_type[i].rec2 + "</p>");
                             }
                         }
                     }
