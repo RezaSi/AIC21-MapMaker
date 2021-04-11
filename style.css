@@ -29,3 +29,11 @@ body{
     width: 40px;
     height: 40px;
 }
+
+.table .cell p{
+    font-size: 10px;
+    width: 10px;
+    margin-top: 1px;
+    margin-left: 1px;
+    color: white;
+}

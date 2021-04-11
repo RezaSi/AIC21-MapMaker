@@ -1,10 +1,10 @@
 var colors = ["rgb(127, 140, 141)", "rgb(192, 57, 43)", "rgb(39, 174, 96)", "rgb(241, 196, 15)", "rgb(52, 73, 94)"];
 
-templateEmptyCell = (row, col) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": 0, "rec2": 0},`;
-templateWallCell = (row, col) => `{"row": ${row}, "col": ${col}, "cell_type": 3, "rec1": 0, "rec2": 0},`;
-templateRec1Cell = (row, col) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": 40, "rec2": 0},`;
-templateRec2Cell = (row, col) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": 0, "rec2": 40},`;
-templateBaseCell = (row, col) => `{"row": ${row}, "col": ${col}, "cell_type": 1, "rec1": 0, "rec2": 0},`;
+templateEmptyCell = (row, col, rec1, rec2) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": ${rec1}, "rec2": ${rec2}},`;
+templateWallCell = (row, col, rec1, rec2) => `{"row": ${row}, "col": ${col}, "cell_type": 3, "rec1": ${rec1}, "rec2": ${rec2}},`;
+templateRec1Cell = (row, col, rec1, rec2) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": ${rec1}, "rec2": ${rec2}},`;
+templateRec2Cell = (row, col, rec1, rec2) => `{"row": ${row}, "col": ${col}, "cell_type": 2, "rec1": ${rec1}, "rec2": ${rec2}},`;
+templateBaseCell = (row, col, rec1, rec2) => `{"row": ${row}, "col": ${col}, "cell_type": 1, "rec1": ${rec1}, "rec2": ${rec2}},`;
 
 var color_to_object = {
     'rgb(127, 140, 141)': templateEmptyCell,
@@ -38,11 +38,24 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+    $(".table").on('mousewheel', '.cell', event => {
+        event.preventDefault();
+        const clickedCell = $(event.target);
+        if(event.originalEvent.wheelDelta / 120 > 0) {
+            clickedCell.find("p").text(parseInt(clickedCell.text()) + 1);
+        }
+        else{
+            clickedCell.find("p").text(parseInt(clickedCell.text()) - 1);
+        }
+    });
+});
+
+$(document).ready(function(){
     $("#width").on('input', event => {
         width = $(event.target).val();
         $(".row").empty();
         for (var i = 0; i < width; ++i) {
-            $(".row").append('<div class="cell"></div>');
+            $(".row").append('<div class="cell"><p>0</p></div>');
         }
         
     });
@@ -77,7 +90,17 @@ $(document).ready(function(){
         output += '"cells_type": [' + "\n";
         $( ".row" ).each(function( row ) {
             $(this).find( ".cell" ).each(function( col ) {
-                output += color_to_object[$( this ).css("background-color" )](row, col);
+                value = parseInt($(this).find("p").text());
+                backgroundColor = $( this ).css("background-color" );
+
+                rec1 = 0;
+                rec1 = 0;
+                if(backgroundColor == "rgb(39, 174, 96)"){
+                    rec1 = value;
+                }else{
+                    rec2 = value;
+                }
+                output += color_to_object[$( this ).css("background-color" )](row, col, rec1, rec2);
                 output += "\n";
             });
         });
@@ -103,7 +126,7 @@ $(document).ready(function(){
         }
         $(".row").empty();
         for (var i = 0; i < width; ++i) {
-            $(".row").append('<div class="cell"></div>');
+            $(".row").append('<div class="cell"><p>0</p></div>');
         }
 
         $( ".row" ).each(function( row ) {
@@ -119,8 +142,10 @@ $(document).ready(function(){
                         if(mapJson.cells_type[i].cell_type == 2){
                             if(mapJson.cells_type[i].rec1 > 0){
                                 $( this ).css("background-color", "rgb(39, 174, 96)");
+                                $( this ).find("p").text(mapJson.cells_type[i].rec1);
                             }else if(mapJson.cells_type[i].rec2 > 0){
                                 $( this ).css("background-color", "rgb(241, 196, 15)");
+                                $( this ).find("p").text(mapJson.cells_type[i].rec2);
                             }
                         }
                     }
@@ -135,4 +160,4 @@ $(function() {
     $(this).bind("contextmenu", function(e) {
         e.preventDefault();
     });
-}); 
+});
