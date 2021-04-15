@@ -60,7 +60,7 @@ $(document).ready(function(){
         width = $(event.target).val();
         $(".row").empty();
         for (var i = 0; i < width; ++i) {
-            $(".row").append('<div class="cell"><p>0</p></div>');
+            $(".row").append('<div class="cell"></div>');
         }
         
     });
